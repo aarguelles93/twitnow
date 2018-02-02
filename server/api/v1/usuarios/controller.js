@@ -28,6 +28,7 @@ exports.getAllUsuarios = (req, res, next) => {
     Model.find({ estado : true })
         .skip(skip)
         .limit(limit)
+        .sort({ apellido: 'asc', nombre : 'asc'})
         //.populate('author')
         .then( docs => {
             res.json({

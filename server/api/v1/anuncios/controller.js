@@ -30,6 +30,7 @@ exports.getAllAnuncios = (req, res, next) => {
         .find()
         .skip(skip)
         .limit(limit)
+        .sort({ createdAt: -1 })
         //.populate('autor')
         .populate({path : 'autor', match : {estado : true}})
         //.populate('autor', {estado : true})

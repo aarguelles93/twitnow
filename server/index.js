@@ -3,7 +3,8 @@ const app =  express();
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const config = require('./../config');
+const cors = require("cors");
+const config = require('./config');
 
 mongoose.connect(config.db.url);
 
@@ -13,6 +14,27 @@ const api = require('./api/v1');
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json 
 app.use(bodyParser.json());
+
+var corsOptions ={
+    origin: function (origin, callback){
+        // Validate if received origin is part of whitelist
+        if (config.cors.origin.indexOf(origin) !== -1){
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+    credentials : Boolean(config.cors.credentials)
+}
+
+app.use(cors(corsOptions));
+
+/*
+app.use(cors({
+    origin: String(config.cors.origin),
+    credentials: Boolean(config.cors.credentials)
+}));
+*/
 
 app.use("/api", api);
 
